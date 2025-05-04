@@ -35,7 +35,7 @@ function calculate() {
     const currency = document.getElementById("currency");
 
     if (mode === "buy") {
-        result.textContent = (amount * buyRate).toFixed(2);
+        result.textContent = (amount * buyшина
         currency.textContent = "جنيه";
     } else {
         result.textContent = (amount * sellRate).toFixed(2);
@@ -59,18 +59,33 @@ document.getElementById("payment-method").addEventListener("change", function ()
     details.textContent = paymentDetails[method] || "يرجى اختيار طريقة دفع";
 });
 
-// رفع إثبات التحويل باستخدام Imgur API (مثال)
-
-async function uploadImageToImgbb(file) {
-      const formData = new FormData();
-      formData.append("image", file);
-      const response = await fetch("https://api.imgbb.com/1/upload?key=bde613bd4475de5e00274a795091ba04", {
-        method: "POST",
-        body: formData
-      });
-      const data = await response.json();
-      return data.success ? data.data.url : "لم يتم رفع صورة";
+// رفع إثبات التحويل باستخدام ImgBB API
+async function uploadProof(file) {
+    if (!file) {
+        alert("يرجى اختيار ملف إثبات التحويل!");
+        return null;
     }
+
+    const apiKey = "bde613bd4475de5e00274a795091ba04"; // مفتاح ImgBB
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+        const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
+            method: "POST",
+            body: formData
+        });
+        const data = await response.json();
+        if (data.success) {
+            return data.data.url; // رابط الصورة
+        } else {
+            throw new Error(data.error.message || "فشل رفع الصورة");
+        }
+    } catch (error) {
+        alert("خطأ أثناء رفع إثبات التحويل: " + error.message);
+        return null;
+    }
+}
 
 // إرسال الطلب عبر WhatsApp
 async function submitOrder() {
@@ -111,4 +126,8 @@ async function submitOrder() {
     const transaction = document.createElement("li");
     transaction.textContent = `تم ${mode === "buy" ? "شراء" : "بيع"} ${amount} USDT بقيمة ${document.getElementById("result").textContent} جنيه في ${new Date().toLocaleString()}`;
     transactionsList.prepend(transaction);
+
+    // إعادة تعيين النموذج بعد الإرسال
+    form.reset();
+    document.getElementById("payment-details").style.display = "none";
 }
