@@ -107,20 +107,23 @@ async function submitOrder(event) {
     if (!proofLink) return;
 
     // إعداد رسالة WhatsApp
-    const message = `
-طلب جديد (#${Math.floor(Math.random() * 10000)})
-- نوع: ${mode === "buy" ? "شراء" : "بيع"} USDT
-- الكمية: ${amount} USDT
-- المبلغ: ${document.getElementById("result").textContent} جنيه
-- طريقة الدفع: ${document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text}
-- الاسم: ${clientName}
-- محفظة USDT: ${walletAddress}
-- إثبات التحويل: ${proofLink}
-    `;
+    const message = `طلب جديد (#${Math.floor(Math.random() * 10000)})
+نوع: ${mode === "buy" ? "شراء" : "بيع"} USDT
+الكمية: ${amount} USDT
+المبلغ: ${document.getElementById("result").textContent} جنيه
+طريقة الدفع: ${document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text}
+الاسم: ${clientName}
+محفظة USDT: ${walletAddress}
+إثبات التحويل: ${proofLink}`;
 
-    // رابط WhatsApp
-    const whatsappUrl = `https://wa.me/+201030956097?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
+    // رابط WhatsApp باستخدام api.whatsapp.com
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=+201030956097&text=${encodeURIComponent(message)}`;
+    try {
+        window.open(whatsappUrl, "_blank");
+    } catch (error) {
+        alert("خطأ أثناء فتح WhatsApp: " + error.message);
+        console.error("WhatsApp URL Error:", error);
+    }
 
     // محاكاة إضافة معاملة مكتملة (للعرض فقط)
     const transactionsList = document.getElementById("transactions-list");
