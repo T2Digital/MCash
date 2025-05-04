@@ -83,6 +83,7 @@ async function uploadProof(file) {
         }
     } catch (error) {
         alert("خطأ أثناء رفع إثبات التحويل: " + error.message);
+        console.error("Upload Error:", error);
         return null;
     }
 }
@@ -116,13 +117,14 @@ async function submitOrder(event) {
 محفظة USDT: ${walletAddress}
 إثبات التحويل: ${proofLink}`;
 
-    // رابط WhatsApp باستخدام api.whatsapp.com
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=+201030956097&text=${encodeURIComponent(message)}`;
+    // رابط WhatsApp
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=201030956097&text=${encodeURIComponent(message)}`;
     try {
         window.open(whatsappUrl, "_blank");
+        console.log("WhatsApp URL:", whatsappUrl); // للتصحيح
     } catch (error) {
         alert("خطأ أثناء فتح WhatsApp: " + error.message);
-        console.error("WhatsApp URL Error:", error);
+        console.error("WhatsApp Error:", error);
     }
 
     // محاكاة إضافة معاملة مكتملة (للعرض فقط)
@@ -135,3 +137,6 @@ async function submitOrder(event) {
     form.reset();
     document.getElementById("payment-details").style.display = "none";
 }
+
+// ربط حدث submit للنموذج
+document.getElementById("order-form").addEventListener("submit", submitOrder);
