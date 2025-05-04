@@ -60,30 +60,17 @@ document.getElementById("payment-method").addEventListener("change", function ()
 });
 
 // رفع إثبات التحويل باستخدام Imgur API (مثال)
-async function uploadProof(file) {
-    const clientId = "ed06e7004bb7178a69bfe2fe4b6d10ba"; // مفتاح Imgur API
-    const formData = new FormData();
-    formData.append("image", file);
 
-    try {
-        const response = await fetch("https://api.imgur.com/3/image", {
-            method: "POST",
-            headers: {
-                Authorization: `Client-ID ${clientId}`
-            },
-            body: formData
-        });
-        const data = await response.json();
-        if (data.success) {
-            return data.data.link; // رابط الصورة
-        } else {
-            throw new Error("فشل رفع الصورة");
-        }
-    } catch (error) {
-        alert("خطأ أثناء رفع إثبات التحويل: " + error.message);
-        return null;
+async function uploadImageToImgbb(file) {
+      const formData = new FormData();
+      formData.append("image", file);
+      const response = await fetch("https://api.imgbb.com/1/upload?key=bde613bd4475de5e00274a795091ba04", {
+        method: "POST",
+        body: formData
+      });
+      const data = await response.json();
+      return data.success ? data.data.url : "لم يتم رفع صورة";
     }
-}
 
 // إرسال الطلب عبر WhatsApp
 async function submitOrder() {
