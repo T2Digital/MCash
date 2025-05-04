@@ -35,7 +35,7 @@ function calculate() {
     const currency = document.getElementById("currency");
 
     if (mode === "buy") {
-        result.textContent = (amount * buyшина
+        result.textContent = (amount * buyRate).toFixed(2);
         currency.textContent = "جنيه";
     } else {
         result.textContent = (amount * sellRate).toFixed(2);
@@ -88,7 +88,8 @@ async function uploadProof(file) {
 }
 
 // إرسال الطلب عبر WhatsApp
-async function submitOrder() {
+async function submitOrder(event) {
+    event.preventDefault(); // منع إعادة تحميل الصفحة
     const form = document.getElementById("order-form");
     if (!form.checkValidity()) {
         alert("يرجى ملء جميع الحقول!");
@@ -127,7 +128,7 @@ async function submitOrder() {
     transaction.textContent = `تم ${mode === "buy" ? "شراء" : "بيع"} ${amount} USDT بقيمة ${document.getElementById("result").textContent} جنيه في ${new Date().toLocaleString()}`;
     transactionsList.prepend(transaction);
 
-    // إعادة تعيين النموذج بعد الإرسال
+    // إعادة تعيين النموذج
     form.reset();
     document.getElementById("payment-details").style.display = "none";
 }
