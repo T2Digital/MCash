@@ -3,7 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MCash - صرافة USDT</title>
+    <title>تيتو كاش: شراء وبيع البيتكوين وتيثر دولار رقمي في مصر</title>
+    <meta name="description" content="تيتو كاش - منصتك الأولى لشراء وبيع البيتكوين وتيثر دولار (USDT) والعملات الرقمية في مصر بأمان وسرعة. استبدل عملاتك الرقمية بجنيه مصري عبر البنك الأهلي، CIB، فودافون كاش، وإنستاباي بأفضل الأسعار.">
+    <meta name="keywords" content="شراء بيتكوين مصر, بيع تيثر دولار, شراء USDT, بيع عملات رقمية, تيتو كاش, صرافة عملات رقمية, البلوكتشين, إيثيريوم, أفضل أسعار البيتكوين, تداول العملات الرقمية">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="T2 Cash">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="تيتو كاش: شراء وبيع البيتكوين وتيثر دولار في مصر">
+    <meta property="og:description" content="منصة تيتو كاش لشراء وبيع البيتكوين وتيثر دولار (USDT) والعملات الرقمية بسهولة وأمان في مصر. استبدل عملاتك الآن بأفضل الأسعار!">
+    <meta property="og:image" content="https://i.ibb.co/NgjqbwFq/1000017959.png">
+    <meta property="og:url" content="https://t2digital.github.io/MCash/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="T2 Cash">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تيتو كاش: شراء وبيع البيتكوين وتيثر دولار في مصر">
+    <meta name="twitter:description" content="منصة تيتو كاش لشراء وبيع البيتكوين وتيثر دولار (USDT) والعملات الرقمية بسهولة وأمان في مصر.">
+    <meta name="twitter:image" content="https://i.ibb.co/NgjqbwFq/1000017959.png">
+
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -16,12 +35,12 @@
     <div class="container">
         <!-- الشعار -->
         <div class="logo">
-            <img src="https://i.ibb.co/NgjqbwFq/1000017959.png" alt="MCash Logo">
+            <img src="https://i.ibb.co/NgjqbwFq/1000017959.png" alt="شعار تيتو كاش">
         </div>
 
         <!-- قسم الشراء/البيع -->
-        <div class="calculator-section">
-            <h1>شراء أو بيع USDT مع MCash</h1>
+        <section class="calculator-section">
+            <h1>تيتو كاش: شراء وبيع البيتكوين وتيثر دولار رقمي</h1>
             <div class="toggle">
                 <button class="toggle-btn active" onclick="setMode('buy')">شراء USDT</button>
                 <button class="toggle-btn" onclick="setMode('sell')">بيع USDT</button>
@@ -43,21 +62,54 @@
                     <option value="insta-pay">إنستاباي</option>
                 </select>
                 <div id="payment-details" class="payment-details"></div>
+                <input type="text" id="account-details" placeholder="بيانات حسابك (رقم الحساب أو المحفظة)" style="display: none;">
                 <input type="text" id="client-name" placeholder="الاسم" required>
-                <input type="text" id="wallet-address" placeholder="عنوان محفظة USDT" required>
+                <div id="wallet-section">
+                    <input type="text" id="wallet-address" placeholder="عنوان محفظة USDT" required>
+                    <div id="wallet-fixed" style="display: none; background: #1e3a8a; padding: 15px; border-radius: 5px; margin: 10px 0; color: #fff;">
+                        أرسل USDT إلى عنوان المحفظة: <span id="fixed-wallet">0x1234567890abcdef1234567890abcdef12345678</span>
+                    </div>
+                </div>
                 <input type="file" id="proof" accept="image/*,.pdf" required>
                 <button type="submit">تأكيد الدفع</button>
             </form>
-        </div>
+        </section>
 
-        <!-- قسم المعاملات المكتملة -->
-        <div class="transactions-section">
-            <h2>المعاملات الأخيرة</h2>
-            <ul id="transactions-list">
-                <!-- سيتم إضافة المعاملات ديناميكيًا -->
-            </ul>
-        </div>
+        <!-- قسم تعريفي -->
+        <section class="intro-section">
+            <h2>لماذا تختار تيتو كاش لشراء وبيع العملات الرقمية؟</h2>
+            <p>تيتو كاش هي منصتك الموثوقة لشراء البيتكوين وتيثر دولار (USDT) وبيع العملات الرقمية في مصر بأمان وسرعة. نقدم أفضل أسعار تداول العملات الرقمية مع دعم طرق دفع متعددة مثل البنك الأهلي، CIB، فودافون كاش، وإنستاباي. سواء كنت مبتدئًا أو محترفًا في تداول البيتكوين والإيثيريوم، تيتو كاش توفر تجربة سهلة وآمنة لاستبدال عملاتك الرقمية بجنيه مصري. ابدأ الآن!</p>
+        </section>
+
+        <!-- قسم البلوكتشين -->
+        <section class="info-section">
+            <h2>ما هو البلوكتشين؟</h2>
+            <p>البلوكتشين هي تقنية ثورية تُستخدم كسجل رقمي موزع لتسجيل المعاملات بشكل آمن وشفاف. تعتمد على سلسلة من الكتل (Blocks) تحتوي على بيانات المعاملات، مرتبطة ببعضها بطريقة مشفرة. تُستخدم البلوكتشين في العملات الرقمية مثل البيتكوين والإيثيريوم لضمان الأمان ومنع التلاعب. في تيتو كاش، نقدم خدمات تداول العملات الرقمية المبنية على تقنية البلوكتشين لتوفير تجربة موثوقة في مصر.</p>
+        </section>
+
+        <!-- قسم البيتكوين -->
+        <section class="info-section">
+            <h2>ما هو البيتكوين؟</h2>
+            <p>البيتكوين (Bitcoin) هي أول عملة رقمية لامركزية في العالم، أُطلقت عام 2009 بواسطة ساتوشي ناكاموتو. تعمل على تقنية البلوكتشين وتُستخدم كوسيلة دفع أو استثمار. يتميز البيتكوين بالأمان، الشفافية، وقلة الرسوم مقارنة بالتحويلات البنكية. مع تيتو كاش، يمكنك شراء وبيع البيتكوين بسهولة في مصر باستخدام البنك الأهلي، CIB، أو فودافون كاش بأفضل الأسعار.</p>
+        </section>
+
+        <!-- قسم الإيثيريوم -->
+        <section class="info-section">
+            <h2>ما هو الإيثيريوم؟</h2>
+            <p>الإيثيريوم (Ethereum) هي منصة بلوكتشين مفتوحة المصدر تتيح إنشاء العقود الذكية والتطبيقات اللامركزية (DApps). عملتها الأساسية هي الإيثر (ETH)، وهي ثاني أكبر عملة رقمية بعد البيتكوين. يُستخدم الإيثيريوم في التمويل اللامركزي (DeFi) والرموز غير القابلة للاستبدال (NFTs). مع تيتو كاش، يمكنك تداول الإيثيريوم وتحويله إلى جنيه مصري بسرعة وأمان.</p>
+        </section>
+
+        <!-- قسم تيثر -->
+        <section class="info-section">
+            <h2>ما هو تيثر (USDT)؟</h2>
+            <p>تيثر (USDT) هي عملة رقمية مستقرة (Stablecoin) مرتبطة بقيمة الدولار الأمريكي، مما يجعلها مثالية لتداول العملات الرقمية دون تقلبات الأسعار. تُستخدم USDT على نطاق واسع في منصات التداول لشراء البيتكوين والإيثيريوم. في تيتو كاش، نقدم خدمات شراء وبيع تيثر دولار في مصر بسهولة عبر طرق دفع متعددة مثل إنستاباي وفودافون كاش، مع أفضل أسعار السوق.</p>
+        </section>
     </div>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <p>جميع الحقوق محفوظة © T2 Cash</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
