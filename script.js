@@ -21,7 +21,7 @@ particlesJS("particles-js", {
 async function fetchCryptoPrices() {
     try {
         const response = await fetch(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,tether,binancecoin,ripple,solana,litecoin,bitcoin-cash,cardano,polkadot,chainlink&order=market_cap_desc&per_page=11&page=1&sparkline=false&price_change_percentage=24h"
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,tether,binancecoin,ripple,solana,litecoin,bitcoin-cash,cardano,polkadot,chainlink,worldcoin,uniswap,filecoin,sui,tron,ordinals,near,iota,hedera-hashgraph,ethereum-classic&order=market_cap_desc&per_page=21&page=1&sparkline=false&price_change_percentage=24h"
         );
         const data = await response.json();
         updateTicker(data);
@@ -76,7 +76,12 @@ function updateMarketStats(data) {
 let mode = "buy";
 const buyRate = 50; // سعر الشراء (1 USDT = 50 جنيه)
 const sellRate = 48; // سعر البيع (1 USDT = 48 جنيه)
-const fixedWallet = "0x1234567890abcdef1234567890abcdef12345678"; // عدل بعنوان محفظتك الحقيقي
+const fixedWallet = "TQB2tBSsChr5SHcahUvwe4hEaSE1t1nKDT"; // عنوان المحفظة في البيع
+const exchangeIds = {
+    binance: "40460946",
+    okx: "40460946",
+    kucoin: "40460946"
+};
 
 function setMode(newMode) {
     mode = newMode;
@@ -84,6 +89,7 @@ function setMode(newMode) {
     document.querySelector(`button[onclick="setMode('${newMode}')"]`).classList.add("active");
     updateWalletField();
     updateAccountDetailsField();
+    updateReceiveFields();
     calculate();
 }
 
@@ -91,16 +97,24 @@ function updateWalletField() {
     const walletInput = document.getElementById("wallet-address");
     const walletFixed = document.getElementById("wallet-fixed");
     const fixedWalletSpan = document.getElementById("fixed-wallet");
+    const binanceIdSpan = document.getElementById("binance-id");
+    const okxIdSpan = document.getElementById("okx-id");
+    const kucoinIdSpan = document.getElementById("kucoin-id");
+    const receiveMethod = document.getElementById("receive-method");
 
     if (mode === "sell") {
         walletInput.style.display = "none";
         walletFixed.style.display = "block";
+        receiveMethod.style.display = "none";
         fixedWalletSpan.textContent = fixedWallet;
+        binanceIdSpan.textContent = exchangeIds.binance;
+        okxIdSpan.textContent = exchangeIds.okx;
+        kucoinIdSpan.textContent = exchangeIds.kucoin;
         walletInput.removeAttribute("required");
     } else {
-        walletInput.style.display = "block";
+        walletInput.style.display = "none";
         walletFixed.style.display = "none";
-        walletInput.setAttribute("required", "true");
+        receiveMethod.style.display = "block";
     }
 }
 
@@ -112,6 +126,43 @@ function updateAccountDetailsField() {
     } else {
         accountDetailsInput.style.display = "none";
         accountDetailsInput.removeAttribute("required");
+    }
+}
+
+function updateReceiveFields() {
+    const receiveMethod = document.getElementById("receive-method").value;
+    const walletInput = document.getElementById("wallet-address");
+    const exchangeSection = document.getElementById("exchange-id-section");
+    const exchangePlatform = document.getElementById("exchange-platform");
+    const exchangeId = document.getElementById("exchange-id");
+
+    if (mode === "sell") {
+        walletInput.style.display = "none";
+        exchangeSection.style.display = "none";
+        walletInput.removeAttribute("required");
+        exchangePlatform.removeAttribute("required");
+        exchangeId.removeAttribute("required");
+        return;
+    }
+
+    if (receiveMethod === "wallet") {
+        walletInput.style.display = "block";
+        exchangeSection.style.display = "none";
+        walletInput.setAttribute("required", "true");
+        exchangePlatform.removeAttribute("required");
+        exchangeId.removeAttribute("required");
+    } else if (receiveMethod === "exchange") {
+        walletInput.style.display = "none";
+        exchangeSection.style.display = "flex";
+        walletInput.removeAttribute("required");
+        exchangePlatform.setAttribute("required", "true");
+        exchangeId.setAttribute("required", "true");
+    } else {
+        walletInput.style.display = "none";
+        exchangeSection.style.display = "none";
+        walletInput.removeAttribute("required");
+        exchangePlatform.removeAttribute("required");
+        exchangeId.removeAttribute("required");
     }
 }
 
@@ -136,10 +187,8 @@ document.getElementById("payment-method").addEventListener("change", function ()
     details.style.display = "block";
 
     const paymentDetails = {
-        "bank-alahly": "البنك الأهلي - رقم الحساب: 123456789 - IBAN: EG123456789",
-        "cib": "CIB - رقم الحساب: 987654321 - IBAN: EG987654321",
-        "vodafone-cash": "فودافون كاش - رقم المحفظة: 0123456789",
-        "insta-pay": "إنستاباي - رقم الحساب: 0123456789"
+        "insta-pay": "إنستاباي - رقم الحساب: 01030956097",
+        "wallet": "محفظة - الرقم: 01030956097"
     };
 
     details.textContent = paymentDetails[method] || "يرجى اختيار طريقة دفع";
@@ -187,32 +236,35 @@ async function submitOrder(event) {
     const paymentMethod = document.getElementById("payment-method").value;
     const clientName = document.getElementById("client-name").value;
     const accountDetails = document.getElementById("account-details").value;
-    const walletAddress = mode === "sell" ? fixedWallet : document.getElementById("wallet-address").value;
-    const proof = document.getElementById("proof").files[0];
+    const receiveMethod = document.getElementById("receive-method").value;
+    const walletAddress = receiveMethod === "wallet" ? document.getElementById("wallet-address").value : (mode === "sell" ? fixedWallet : "");
+    const exchangePlatform = document.getElementById("exchange-platform").value;
+    const exchangeId = document.getElementById("exchange-id").value;
 
     // رفع إثبات التحويل
-    const proofLink = await uploadProof(proof);
+    const proofLink = await uploadProof(document.getElementById("proof").files[0]);
     if (!proofLink) return;
 
     // إعداد رسالة WhatsApp
     const paymentMethodName = document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text;
+    const exchangeInfo = receiveMethod === "exchange" && exchangePlatform && exchangeId ? `${exchangePlatform.toUpperCase()} ID: ${exchangeId}` : "";
     const message = `طلب جديد (#${Math.floor(Math.random() * 10000)})
 نوع: ${mode === "buy" ? "شراء" : "بيع"} USDT
 الكمية: ${amount} USDT
 المبلغ: ${document.getElementById("result").textContent} جنيه
 طريقة الدفع: ${paymentMethodName}
 ${mode === "sell" ? `بيانات الحساب: ${accountDetails}` : ""}
+${receiveMethod === "wallet" ? `محفظة USDT: ${walletAddress}` : ""}
+${exchangeInfo ? `منصة الاستلام: ${exchangeInfo}` : ""}
 الاسم: ${clientName}
-محفظة USDT: ${walletAddress}
 إثبات التحويل: ${proofLink}`;
 
     // رابط WhatsApp بصيغة wa.me
-    const phoneNumber = "201030956097"; // رقم WhatsApp
+    const phoneNumber = "201030956097";
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
 
     try {
-        // فتح WhatsApp في نافذة جديدة
         const whatsappWindow = window.open(whatsappUrl, "_blank");
         if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === "undefined") {
             alert("يرجى تثبيت تطبيق WhatsApp أو السماح بفتح الروابط في المتصفح.");
@@ -227,6 +279,7 @@ ${mode === "sell" ? `بيانات الحساب: ${accountDetails}` : ""}
     document.getElementById("payment-details").style.display = "none";
     updateWalletField();
     updateAccountDetailsField();
+    updateReceiveFields();
 }
 
 // ربط حدث submit للنموذج
@@ -236,6 +289,7 @@ document.getElementById("order-form").addEventListener("submit", submitOrder);
 document.addEventListener("DOMContentLoaded", () => {
     updateWalletField();
     updateAccountDetailsField();
+    updateReceiveFields();
     fetchCryptoPrices();
     fetchMarketStats();
 
