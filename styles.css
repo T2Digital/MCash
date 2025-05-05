@@ -33,6 +33,32 @@ body {
     margin-bottom: 20px;
 }
 
+/* تنسيق مستطيل الأسعار */
+.price-box {
+    background: #1e3a8a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.price-box h2 {
+    font-size: 20px;
+    color: #fbbf24;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.price-box p {
+    font-size: 16px;
+    color: #fff;
+}
+
+.price-box p span {
+    color: #FFD700; /* اللون الذهبي للأرقام */
+    font-weight: bold;
+}
+
 /* تنسيق شريط الأسعار اللحظية */
 .crypto-ticker {
     background: #1e3a8a;
@@ -46,7 +72,7 @@ body {
 .ticker-wrapper {
     white-space: nowrap;
     display: inline-block;
-    animation: ticker 60s linear infinite;
+    animation: ticker 130s ease-in-out infinite; /* سرعة 130 ثانية، حركة Smooth */
 }
 
 .ticker-wrapper:hover {
@@ -58,10 +84,17 @@ body {
     margin: 0 30px;
     color: #fff;
     font-size: 16px;
+    opacity: 0; /* البداية غير مرئية لتأثير Fade-In */
+    animation: fadeIn 0.5s ease-in forwards; /* تأثير Fade-In */
 }
 
 .ticker-item span {
     margin: 0 5px;
+}
+
+.ticker-item .coin-symbol {
+    color: #00FF80; /* اللون الأخضر النعناعي لرمز العملة */
+    font-weight: bold;
 }
 
 .ticker-item .price-up {
@@ -70,6 +103,18 @@ body {
 
 .ticker-item .price-down {
     color: #ff3b30;
+}
+
+/* تأثير Fade-In */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(5px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* تحريك شريط الأسعار */
+@keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
 }
 
 /* تنسيق شريط إحصائيات السوق */
@@ -88,12 +133,6 @@ body {
     color: #fff;
     font-size: 14px;
     margin: 5px;
-}
-
-/* تحريك شريط الأسعار */
-@keyframes ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
 }
 
 h1, h2 {
@@ -281,72 +320,4 @@ form button {
 
 form button:hover {
     background: #e5b000;
-}
-
-#wallet-fixed {
-    word-break: break-all;
-}
-
-.footer {
-    text-align: center;
-    padding: 20px;
-    background: #1e3a8a;
-    color: #fff;
-    margin-top: 40px;
-    border-radius: 10px;
-}
-
-.footer p {
-    font-size: 14px;
-    margin-bottom: 10px;
-}
-
-.social-icons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-icon {
-    color: #fff;
-    font-size: 20px;
-    transition: color 0.3s;
-}
-
-.social-icon:hover {
-    color: #fbbf24;
-}
-
-/* توافق مع الشاشات الصغيرة */
-@media (max-width: 600px) {
-    .ticker-item {
-        font-size: 14px;
-        margin: 0 20px;
-    }
-    .market-stats {
-        flex-direction: column;
-        text-align: center;
-    }
-    .market-stats span {
-        font-size: 12px;
-    }
-    .platform-links {
-        flex-direction: column;
-        gap: 10px;
-    }
-    .platform-btn {
-        width: 100%;
-        text-align: center;
-    }
-    .rules-section ul {
-        font-size: 14px;
-    }
-    #wallet-section #exchange-id-section {
-        flex-direction: column;
-        gap: 5px;
-    }
-    #wallet-section #exchange-id-section select,
-    #wallet-section #exchange-id-section input {
-        width: 100%;
-    }
 }
