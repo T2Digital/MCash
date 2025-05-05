@@ -21,12 +21,43 @@ particlesJS("particles-js", {
 let mode = "buy";
 const buyRate = 50; // سعر الشراء (1 USDT = 50 جنيه)
 const sellRate = 48; // سعر البيع (1 USDT = 48 جنيه)
+const fixedWallet = "0x1234567890abcdef1234567890abcdef12345678"; // عدل بعنوان محفظتك الحقيقي
 
 function setMode(newMode) {
     mode = newMode;
     document.querySelectorAll(".toggle-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelector(`button[onclick="setMode('${newMode}')"]`).classList.add("active");
+    updateWalletField();
+    updateAccountDetailsField();
     calculate();
+}
+
+function updateWalletField() {
+    const walletInput = document.getElementById("wallet-address");
+    const walletFixed = document.getElementById("wallet-fixed");
+    const fixedWalletSpan = document.getElementById("fixed-wallet");
+
+    if (mode === "sell") {
+        walletInput.style.display = "none";
+        walletFixed.style.display = "block";
+        fixedWalletSpan.textContent = fixedWallet;
+        walletInput.removeAttribute("required");
+    } else {
+        walletInput.style.display = "block";
+        walletFixed.style.display = "none";
+        walletInput.setAttribute("required", "true");
+    }
+}
+
+function updateAccountDetailsField() {
+    const accountDetailsInput = document.getElementById("account-details");
+    if (mode === "sell") {
+        accountDetailsInput.style.display = "block";
+        accountDetailsInput.setAttribute("required", "true");
+    } else {
+        accountDetailsInput.style.display = "none";
+        accountDetailsInput.removeAttribute("required");
+    }
 }
 
 function calculate() {
@@ -66,7 +97,7 @@ async function uploadProof(file) {
         return null;
     }
 
-    const apiKey = "bde613bd4475de5e00274a795091ba04"; // مفتاح ImgBB
+    const apiKey = "bde613bd4475de5e00274a795091ba04";
     const formData = new FormData();
     formData.append("image", file);
 
@@ -77,7 +108,7 @@ async function uploadProof(file) {
         });
         const data = await response.json();
         if (data.success) {
-            return data.data.url; // رابط الصورة
+            return data.data.url;
         } else {
             throw new Error(data.error.message || "فشل رفع الصورة");
         }
@@ -90,7 +121,7 @@ async function uploadProof(file) {
 
 // إرسال الطلب عبر WhatsApp
 async function submitOrder(event) {
-    event.preventDefault(); // منع إعادة تحميل الصفحة
+    event.preventDefault();
     const form = document.getElementById("order-form");
     if (!form.checkValidity()) {
         alert("يرجى ملء جميع الحقول!");
@@ -100,7 +131,8 @@ async function submitOrder(event) {
     const amount = document.getElementById("amount").value;
     const paymentMethod = document.getElementById("payment-method").value;
     const clientName = document.getElementById("client-name").value;
-    const walletAddress = document.getElementById("wallet-address").value;
+    const accountDetails = document.getElementById("account-details").value;
+    const walletAddress = mode === "sell" ? fixedWallet : document.getElementById("wallet-address").value;
     const proof = document.getElementById("proof").files[0];
 
     // رفع إثبات التحويل
@@ -108,11 +140,13 @@ async function submitOrder(event) {
     if (!proofLink) return;
 
     // إعداد رسالة WhatsApp
+    const paymentMethodName = document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text;
     const message = `طلب جديد (#${Math.floor(Math.random() * 10000)})
 نوع: ${mode === "buy" ? "شراء" : "بيع"} USDT
 الكمية: ${amount} USDT
 المبلغ: ${document.getElementById("result").textContent} جنيه
-طريقة الدفع: ${document.getElementById("payment-method").options[document.getElementById("payment-method").selectedIndex].text}
+طريقة الدفع: ${paymentMethodName}
+${mode === "sell" ? `بيانات الحساب: ${accountDetails}` : ""}
 الاسم: ${clientName}
 محفظة USDT: ${walletAddress}
 إثبات التحويل: ${proofLink}`;
@@ -121,22 +155,24 @@ async function submitOrder(event) {
     const whatsappUrl = `https://api.whatsapp.com/send?phone=201030956097&text=${encodeURIComponent(message)}`;
     try {
         window.open(whatsappUrl, "_blank");
-        console.log("WhatsApp URL:", whatsappUrl); // للتصحيح
+        console.log("WhatsApp URL:", whatsappUrl);
     } catch (error) {
         alert("خطأ أثناء فتح WhatsApp: " + error.message);
         console.error("WhatsApp Error:", error);
     }
 
-    // محاكاة إضافة معاملة مكتملة (للعرض فقط)
-    const transactionsList = document.getElementById("transactions-list");
-    const transaction = document.createElement("li");
-    transaction.textContent = `تم ${mode === "buy" ? "شراء" : "بيع"} ${amount} USDT بقيمة ${document.getElementById("result").textContent} جنيه في ${new Date().toLocaleString()}`;
-    transactionsList.prepend(transaction);
-
     // إعادة تعيين النموذج
     form.reset();
     document.getElementById("payment-details").style.display = "none";
+    updateWalletField();
+    updateAccountDetailsField();
 }
 
 // ربط حدث submit للنموذج
 document.getElementById("order-form").addEventListener("submit", submitOrder);
+
+// تهيئة الحقول عند تحميل الصفحة
+document.addEventListener("DOMContentLoaded", () => {
+    updateWalletField();
+    updateAccountDetailsField();
+});
