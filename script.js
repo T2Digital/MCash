@@ -151,11 +151,17 @@ ${mode === "sell" ? `بيانات الحساب: ${accountDetails}` : ""}
 محفظة USDT: ${walletAddress}
 إثبات التحويل: ${proofLink}`;
 
-    // رابط WhatsApp
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=201030956097&text=${encodeURIComponent(message)}`;
+    // رابط WhatsApp بصيغة wa.me
+    const phoneNumber = "201030956097"; // رقم WhatsApp
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
     try {
-        window.open(whatsappUrl, "_blank");
-        console.log("WhatsApp URL:", whatsappUrl);
+        // فتح WhatsApp في نافذة جديدة
+        const whatsappWindow = window.open(whatsappUrl, "_blank");
+        if (!whatsappWindow || whatsappWindow.closed || typeof whatsappWindow.closed === "undefined") {
+            alert("يرجى تثبيت تطبيق WhatsApp أو السماح بفتح الروابط في المتصفح.");
+        }
     } catch (error) {
         alert("خطأ أثناء فتح WhatsApp: " + error.message);
         console.error("WhatsApp Error:", error);
