@@ -46,7 +46,7 @@ body {
 .ticker-wrapper {
     white-space: nowrap;
     display: inline-block;
-    animation: ticker 40s linear infinite; /* تغيير السرعة إلى 40 ثانية */
+    animation: ticker 60s linear infinite;
 }
 
 .ticker-wrapper:hover {
@@ -55,7 +55,7 @@ body {
 
 .ticker-item {
     display: inline-block;
-    margin: 0 30px; /* زيادة التباعد بين العملات */
+    margin: 0 30px;
     color: #fff;
     font-size: 16px;
 }
@@ -101,7 +101,7 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
-.intro-section, .info-section {
+.intro-section, .info-section, .start-trading-section, .rules-section {
     background: rgba(255, 255, 255, 0.1);
     padding: 20px;
     border-radius: 10px;
@@ -109,10 +109,55 @@ h1, h2 {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-.intro-section p, .info-section p {
+.intro-section p, .info-section p, .start-trading-section p {
     font-size: 16px;
     line-height: 1.6;
     color: #fff;
+}
+
+.start-trading-section .platform-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.platform-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #fbbf24;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.platform-btn:hover {
+    background: #e5b000;
+}
+
+.rules-section ul {
+    list-style: none;
+    text-align: right;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #fff;
+}
+
+.rules-section ul li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-right: 20px;
+}
+
+.rules-section ul li::before {
+    content: "✔";
+    color: #fbbf24;
+    position: absolute;
+    right: 0;
+    top: 2px;
 }
 
 .calculator-section {
@@ -198,6 +243,21 @@ form select, form input {
     font-size: 16px;
 }
 
+#wallet-section #exchange-id-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#wallet-section #exchange-id-section select {
+    flex: 1;
+}
+
+#wallet-section #exchange-id-section input {
+    flex: 2;
+}
+
 .payment-details {
     background: #1e3a8a;
     padding: 15px;
@@ -238,13 +298,30 @@ form button:hover {
 
 .footer p {
     font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icon {
+    color: #fff;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #fbbf24;
 }
 
 /* توافق مع الشاشات الصغيرة */
 @media (max-width: 600px) {
     .ticker-item {
         font-size: 14px;
-        margin: 0 20px; /* تباعد أقل على الشاشات الصغيرة */
+        margin: 0 20px;
     }
     .market-stats {
         flex-direction: column;
@@ -252,5 +329,24 @@ form button:hover {
     }
     .market-stats span {
         font-size: 12px;
+    }
+    .platform-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .platform-btn {
+        width: 100%;
+        text-align: center;
+    }
+    .rules-section ul {
+        font-size: 14px;
+    }
+    #wallet-section #exchange-id-section {
+        flex-direction: column;
+        gap: 5px;
+    }
+    #wallet-section #exchange-id-section select,
+    #wallet-section #exchange-id-section input {
+        width: 100%;
     }
 }
