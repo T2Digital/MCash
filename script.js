@@ -17,6 +17,61 @@ particlesJS("particles-js", {
     retina_detect: true
 });
 
+// وظيفة جلب الأسعار اللحظية من CoinGecko
+async function fetchCryptoPrices() {
+    try {
+        const response = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,tether,binancecoin,ripple,solana,litecoin,bitcoin-cash,cardano,polkadot,chainlink&order=market_cap_desc&per_page=11&page=1&sparkline=false&price_change_percentage=24h"
+        );
+        const data = await response.json();
+        updateTicker(data);
+    } catch (error) {
+        console.error("خطأ في جلب أسعار العملات:", error);
+        document.getElementById("ticker-content").innerHTML = "<span>خطأ في تحميل الأسعار</span>";
+    }
+}
+
+// وظيفة جلب إحصائيات السوق من CoinGecko
+async function fetchMarketStats() {
+    try {
+        const response = await fetch("https://api.coingecko.com/api/v3/global");
+        const data = await response.json();
+        updateMarketStats(data.data);
+    } catch (error) {
+        console.error("خطأ في جلب إحصائيات السوق:", error);
+        document.getElementById("market-cap").textContent = "خطأ في تحميل البيانات";
+        document.getElementById("total-coins").textContent = "";
+        document.getElementById("volume-24h").textContent = "";
+    }
+}
+
+// تحديث شريط الأسعار اللحظية
+function updateTicker(coins) {
+    const tickerContent = document.getElementById("ticker-content");
+    tickerContent.innerHTML = "";
+    coins.forEach(coin => {
+        const changeClass = coin.price_change_percentage_24h >= 0 ? "price-up" : "price-down";
+        const tickerItem = document.createElement("div");
+        tickerItem.className = "ticker-item";
+        tickerItem.innerHTML = `
+            ${coin.name}: $${coin.current_price.toFixed(2)} 
+            <span class="${changeClass}">(${coin.price_change_percentage_24h.toFixed(2)}%)</span>
+        `;
+        tickerContent.appendChild(tickerItem);
+    });
+}
+
+// تحديث شريط إحصائيات السوق
+function updateMarketStats(data) {
+    const marketCap = document.getElementById("market-cap");
+    const totalCoins = document.getElementById("total-coins");
+    const volume24h = document.getElementById("volume-24h");
+
+    marketCap.textContent = `إجمالي القيمة السوقية: $${(data.total_market_cap.usd / 1e12).toFixed(2)} تريليون`;
+    totalCoins.textContent = `عدد العملات: ${data.active_cryptocurrencies}`;
+    volume24h.textContent = `حجم التداول (24 ساعة): $${(data.total_volume.usd / 1e9).toFixed(2)} مليار`;
+}
+
 // منطق الحاسبة
 let mode = "buy";
 const buyRate = 50; // سعر الشراء (1 USDT = 50 جنيه)
@@ -177,8 +232,14 @@ ${mode === "sell" ? `بيانات الحساب: ${accountDetails}` : ""}
 // ربط حدث submit للنموذج
 document.getElementById("order-form").addEventListener("submit", submitOrder);
 
-// تهيئة الحقول عند تحميل الصفحة
+// تهيئة الحقول وجلب بيانات العملات عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", () => {
     updateWalletField();
     updateAccountDetailsField();
+    fetchCryptoPrices();
+    fetchMarketStats();
+
+    // تحديث البيانات كل 60 ثانية
+    setInterval(fetchCryptoPrices, 60000);
+    setInterval(fetchMarketStats, 60000);
 });
