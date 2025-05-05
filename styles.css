@@ -1,0 +1,397 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    background: #1a1a2e;
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo img {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+/* تنسيق مستطيل الأسعار */
+.price-box {
+    background: #1e3a8a;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.price-box h2 {
+    font-size: 20px;
+    color: #fbbf24;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.price-box p {
+    font-size: 16px;
+    color: #fff;
+}
+
+.price-box p span {
+    color: #FFD700; /* اللون الذهبي للأرقام */
+    font-weight: bold;
+}
+
+/* تنسيق شريط الأسعار اللحظية */
+.crypto-ticker {
+    background: #1e3a8a;
+    padding: 10px 0;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.ticker-wrapper {
+    white-space: nowrap;
+    display: inline-block;
+    animation: ticker 130s ease-in-out infinite; /* سرعة 130 ثانية، حركة Smooth */
+}
+
+.ticker-wrapper:hover {
+    animation-play-state: paused;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin: 0 30px;
+    color: #fff;
+    font-size: 16px;
+    opacity: 0; /* البداية غير مرئية لتأثير Fade-In */
+    animation: fadeIn 0.5s ease-in forwards; /* تأثير Fade-In */
+}
+
+.ticker-item span {
+    margin: 0 5px;
+}
+
+.ticker-item .coin-symbol {
+    color: #00FF80; /* اللون الأخضر النعناعي لرمز العملة */
+    font-weight: bold;
+}
+
+.ticker-item .price-up {
+    color: #34c759;
+}
+
+.ticker-item .price-down {
+    color: #ff3b30;
+}
+
+/* تأثير Fade-In */
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(5px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* تحريك شريط الأسعار */
+@keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* تنسيق شريط إحصائيات السوق */
+.market-stats {
+    background: #2d3748;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
+}
+
+.market-stats span {
+    color: #fff;
+    font-size: 14px;
+    margin: 5px;
+}
+
+h1, h2 {
+    color: #fbbf24;
+    margin-bottom: 20px;
+}
+
+.intro-section, .info-section, .start-trading-section, .rules-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.intro-section p, .info-section p, .start-trading-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #fff;
+}
+
+.start-trading-section .platform-links {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.platform-btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #fbbf24;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+.platform-btn:hover {
+    background: #e5b000;
+}
+
+.rules-section ul {
+    list-style: none;
+    text-align: right;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #fff;
+}
+
+.rules-section ul li {
+    margin-bottom: 10px;
+    position: relative;
+    padding-right: 20px;
+}
+
+.rules-section ul li::before {
+    content: "✔";
+    color: #fbbf24;
+    position: absolute;
+    right: 0;
+    top: 2px;
+}
+
+.calculator-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
+}
+
+.toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.toggle-btn {
+    padding: 10px 20px;
+    background: #1e3a8a;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+.toggle-btn.active, .toggle-btn:hover {
+    background: #fbbf24;
+    color: #1a1a2e;
+}
+
+.calculator input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    color: #1a1a2e;
+    font-size: 16px;
+}
+
+.result-box {
+    background: #1e3a8a;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 15px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-in;
+}
+
+.result-box p {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.result-box #result {
+    font-size: 28px;
+    font-weight: bold;
+    color: #fbbf24;
+}
+
+.result-box #currency {
+    font-size: 18px;
+    color: #fff;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+form select, form input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    background: #fff;
+    color: #1a1a2e;
+    font-size: 16px;
+}
+
+#wallet-section #exchange-id-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+#wallet-section #exchange-id-section select {
+    flex: 1;
+}
+
+#wallet-section #exchange-id-section input {
+    flex: 2;
+}
+
+.payment-details {
+    background: #1e3a8a;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 10px 0;
+    display: none;
+    color: #fff;
+}
+
+form button {
+    width: 100%;
+    padding: 15px;
+    background: #fbbf24;
+    border: none;
+    color: #1a1a2e;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: #e5b000;
+}
+
+#wallet-fixed {
+    word-break: break-all;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: #1e3a8a;
+    color: #fff;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+.footer p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icon {
+    color: #fff;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: #fbbf24;
+}
+
+/* توافق مع الشاشات الصغيرة */
+@media (max-width: 600px) {
+    .ticker-item {
+        font-size: 14px;
+        margin: 0 20px;
+    }
+    .market-stats {
+        flex-direction: column;
+        text-align: center;
+    }
+    .market-stats span {
+        font-size: 12px;
+    }
+    .platform-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .platform-btn {
+        width: 100%;
+        text-align: center;
+    }
+    .rules-section ul {
+        font-size: 14px;
+    }
+    #wallet-section #exchange-id-section {
+        flex-direction: column;
+        gap: 5px;
+    }
+    #wallet-section #exchange-id-section select,
+    #wallet-section #exchange-id-section input {
+        width: 100%;
+    }
+    .price-box h2 {
+        font-size: 18px;
+    }
+    .price-box p {
+        font-size: 14px;
+    }
+}
