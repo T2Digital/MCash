@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تيتو كاش: شراء وبيع البيتكوين وتيثر دولار رقمي في مصر</title>
-    <meta name="description" content="تيتو كاش - منصتك الأولى لشراء وبيع البيتكوين وتيثر دولار (USDT) والعملات الرقمية في مصر بأمان وسرعة. استبدل عملاتك الرقمية بجنيه مصري عبر البنك الأهلي، CIB، فودافون كاش، وإنستاباي بأفضل الأسعار.">
-    <meta name="keywords" content="شراء بيتكوين مصر, بيع تيثر دولار, شراء USDT, بيع عملات رقمية, تيتو كاش, صرافة عملات رقمية, البلوكتشين, إيثيريوم, أفضل أسعار البيتكوين, تداول العملات الرقمية, أسعار العملات الرقمية لحظية">
+    <meta name="description" content="تيتو كاش - منصتك الأولى لشراء وبيع البيتكوين وتيثر دولار (USDT) والعملات الرقمية في مصر بأمان وسرعة. استبدل عملاتك الرقمية بجنيه مصري عبر إنستاباي ومحفظة بأفضل الأسعار.">
+    <meta name="keywords" content="شراء بيتكوين مصر, بيع تيثر دولار, شراء USDT, بيع عملات رقمية, تيتو كاش, صرافة عملات رقمية, البلوكتشين, إيثيريوم, أفضل أسعار البيتكوين, تداول العملات الرقمية, أسعار العملات الرقمية لحظية, بينانس, كوكوين, او كى اكس, وورلدكوين, يونيسواب, فايلكوين, سوي, ترون, نير, إيوتا, هيدرا, إيثيريوم كلاسيك">
     <meta name="robots" content="index, follow">
     <meta name="author" content="T2 Cash">
 
@@ -26,6 +26,8 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Font Awesome لأيقونات السوشيال ميديا -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
     <!-- الخلفية الديناميكية -->
@@ -70,18 +72,34 @@
             <form id="order-form">
                 <select id="payment-method" required>
                     <option value="" disabled selected>اختر طريقة الدفع</option>
-                    <option value="bank-alahly">البنك الأهلي</option>
-                    <option value="cib">CIB</option>
-                    <option value="vodafone-cash">فودافون كاش</option>
                     <option value="insta-pay">إنستاباي</option>
+                    <option value="wallet">محفظة</option>
                 </select>
                 <div id="payment-details" class="payment-details"></div>
                 <input type="text" id="account-details" placeholder="بيانات حسابك (رقم الحساب أو المحفظة)" style="display: none;">
                 <input type="text" id="client-name" placeholder="الاسم" required>
                 <div id="wallet-section">
-                    <input type="text" id="wallet-address" placeholder="عنوان محفظة USDT" required>
+                    <select id="receive-method" onchange="updateReceiveFields()">
+                        <option value="" disabled selected>اختر طريقة الاستلام</option>
+                        <option value="wallet">عنوان محفظة</option>
+                        <option value="exchange">ID منصة</option>
+                    </select>
+                    <input type="text" id="wallet-address" placeholder="عنوان محفظة USDT" style="display: none;">
+                    <div id="exchange-id-section" style="display: none;">
+                        <select id="exchange-platform">
+                            <option value="" selected>اختر المنصة</option>
+                            <option value="binance">Binance</option>
+                            <option value="okx">OKX</option>
+                            <option value="kucoin">KuCoin</option>
+                        </select>
+                        <input type="text" id="exchange-id" placeholder="أدخل ID المنصة">
+                    </div>
                     <div id="wallet-fixed" style="display: none; background: #1e3a8a; padding: 15px; border-radius: 5px; margin: 10px 0; color: #fff;">
-                        أرسل USDT إلى عنوان المحفظة: <span id="fixed-wallet">0x1234567890abcdef1234567890abcdef12345678</span>
+                        أرسل USDT إلى عنوان المحفظة: <span id="fixed-wallet"></span>
+                        <br>أو استخدم:
+                        <br>Binance ID: <span id="binance-id"></span>
+                        <br>OKX ID: <span id="okx-id"></span>
+                        <br>KuCoin ID: <span id="kucoin-id"></span>
                     </div>
                 </div>
                 <input type="file" id="proof" accept="image/*,.pdf" required>
@@ -89,10 +107,32 @@
             </form>
         </section>
 
+        <!-- مربع القوانين -->
+        <section class="rules-section">
+            <h2>لماذا تثق بتيتو كاش؟</h2>
+            <ul>
+                <li><strong>سرعة التحويل:</strong> نضمن إتمام التحويلات خلال 5 دقائق عند استخدام Binance ID، OKX ID، أو KuCoin ID، وخلال 10 دقائق عند استخدام عنوان محفظة.</li>
+                <li><strong>أمان مضمون:</strong> في حالة عدم استلام الأموال لأي سبب (مع توفر إثبات التحويل)، نضمن استرداد المبلغ بالكامل خلال 24 ساعة.</li>
+                <li><strong>شفافية تامة:</strong> نقدم أسعارًا تنافسية بدون رسوم مخفية، مع تحديثات لحظية لأسعار العملات الرقمية.</li>
+                <li><strong>دعم مستمر:</strong> فريقنا متاح عبر WhatsApp للإجابة على استفساراتك في أي وقت.</li>
+            </ul>
+        </section>
+
+        <!-- مربع إبدأ أول خطوة -->
+        <section class="start-trading-section">
+            <h2>إبدأ أول خطوة في تداول العملات الرقمية</h2>
+            <p>انضم إلى عالم التداول بسهولة وسرعة! قم بإنشاء حسابك الآن في إحدى المنصات العالمية الموثوقة وابدأ رحلتك مع العملات الرقمية.</p>
+            <div class="platform-links">
+                <a href="#" class="platform-btn" target="_blank">سجّل في Binance</a>
+                <a href="#" class="platform-btn" target="_blank">سجّل في OKX</a>
+                <a href="#" class="platform-btn" target="_blank">سجّل في KuCoin</a>
+            </div>
+        </section>
+
         <!-- قسم تعريفي -->
         <section class="intro-section">
             <h2>لماذا تختار تيتو كاش لشراء وبيع العملات الرقمية؟</h2>
-            <p>تيتو كاش هي منصتك الموثوقة لشراء البيتكوين وتيثر دولار (USDT) وبيع العملات الرقمية في مصر بأمان وسرعة. نقدم أفضل أسعار تداول العملات الرقمية مع دعم طرق دفع متعددة مثل البنك الأهلي، CIB، فودافون كاش، وإنستاباي. سواء كنت مبتدئًا أو محترفًا في تداول البيتكوين والإيثيريوم، تيتو كاش توفر تجربة سهلة وآمنة لاستبدال عملاتك الرقمية بجنيه مصري. ابدأ الآن!</p>
+            <p>تيتو كاش هي منصتك الموثوقة لشراء البيتكوين وتيثر دولار (USDT) وبيع العملات الرقمية في مصر بأمان وسرعة. نقدم أفضل أسعار تداول العملات الرقمية مع دعم طرق دفع متعددة مثل إنستاباي ومحفظة. سواء كنت مبتدئًا أو محترفًا في تداول البيتكوين والإيثيريوم، تيتو كاش توفر تجربة سهلة وآمنة لاستبدال عملاتك الرقمية بجنيه مصري. ابدأ الآن!</p>
         </section>
 
         <!-- قسم البلوكتشين -->
@@ -104,7 +144,7 @@
         <!-- قسم البيتكوين -->
         <section class="info-section">
             <h2>ما هو البيتكوين؟</h2>
-            <p>البيتكوين (Bitcoin) هي أول عملة رقمية لامركزية في العالم، أُطلقت عام 2009 بواسطة ساتوشي ناكاموتو. تعمل على تقنية البلوكتشين وتُستخدم كوسيلة دفع أو استثمار. يتميز البيتكوين بالأمان، الشفافية، وقلة الرسوم مقارنة بالتحويلات البنكية. مع تيتو كاش، يمكنك شراء وبيع البيتكوين بسهولة في مصر باستخدام البنك الأهلي، CIB، أو فودافون كاش بأفضل الأسعار.</p>
+            <p>البيتكوين (Bitcoin) هي أول عملة رقمية لامركزية في العالم، أُطلقت عام 2009 بواسطة ساتوشي ناكاموتو. تعمل على تقنية البلوكتشين وتُستخدم كوسيلة دفع أو استثمار. يتميز البيتكوين بالأمان، الشفافية، وقلة الرسوم مقارنة بالتحويلات البنكية. مع تيتو كاش، يمكنك شراء وبيع البيتكوين بسهولة في مصر باستخدام إنستاباي أو محفظة بأفضل الأسعار.</p>
         </section>
 
         <!-- قسم الإيثيريوم -->
@@ -116,13 +156,20 @@
         <!-- قسم تيثر -->
         <section class="info-section">
             <h2>ما هو تيثر (USDT)؟</h2>
-            <p>تيثر (USDT) هي عملة رقمية مستقرة (Stablecoin) مرتبطة بقيمة الدولار الأمريكي، مما يجعلها مثالية لتداول العملات الرقمية دون تقلبات الأسعار. تُستخدم USDT على نطاق واسع في منصات التداول لشراء البيتكوين والإيثيريوم. في تيتو كاش، نقدم خدمات شراء وبيع تيثر دولار في مصر بسهولة عبر طرق دفع متعددة مثل إنستاباي وفودافون كاش، مع أفضل أسعار السوق.</p>
+            <p>تيثر (USDT) هي عملة رقمية مستقرة (Stablecoin) مرتبطة بقيمة الدولار الأمريكي، مما يجعلها مثالية لتداول العملات الرقمية دون تقلبات الأسعار. تُستخدم USDT على نطاق واسع في منصات التداول لشراء البيتكوين والإيثيريوم. في تيتو كاش، نقدم خدمات شراء وبيع تيثر دولار في مصر بسهولة عبر إنستاباي ومحفظة، مع أفضل أسعار السوق.</p>
         </section>
     </div>
 
     <!-- الفوتر -->
     <footer class="footer">
         <p>جميع الحقوق محفوظة © T2 Cash</p>
+        <div class="social-icons">
+            <a href="#" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" target="_blank" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" target="_blank" class="social-icon"><i class="fab fa-telegram-plane"></i></a>
+            <a href="https://wa.me/201030956097" target="_blank" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+        </div>
     </footer>
 
     <script src="script.js"></script>
