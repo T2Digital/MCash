@@ -21,7 +21,7 @@ particlesJS("particles-js", {
 async function fetchCryptoPrices() {
     try {
         const response = await fetch(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,tether,binancecoin,ripple,solana,litecoin,bitcoin-cash,cardano,polkadot,chainlink,worldcoin,uniswap,filecoin,sui,tron,ordinals,near,iota,hedera-hashgraph,ethereum-classic&order=market_cap_desc&per_page=21&page=1&sparkline=false&price_change_percentage=24h"
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,tether,binancecoin,ripple,solana,litecoin,bitcoin-cash,cardano,polkadot,chainlink,worldcoin-org,uniswap,filecoin,sui,tron,ordinals,near,iota,hedera-hashgraph,ethereum-classic,dogecoin,avalanche-2,shiba-inu,polygon,cosmos,stellar,monero,algorand,vechain,aptos,arbitrum,optimism,internet-computer,cronos&order=market_cap_desc&per_page=35&page=1&sparkline=false&price_change_percentage=24h"
         );
         const data = await response.json();
         updateTicker(data);
@@ -49,13 +49,18 @@ async function fetchMarketStats() {
 function updateTicker(coins) {
     const tickerContent = document.getElementById("ticker-content");
     tickerContent.innerHTML = "";
-    coins.forEach(coin => {
+    coins.forEach((coin, index) => {
         const changeClass = coin.price_change_percentage_24h >= 0 ? "price-up" : "price-down";
+        // تعديل رمز Worldcoin إلى WLD
+        const symbol = coin.id === "worldcoin-org" ? "WLD" : coin.symbol.toUpperCase();
+        // التحقق من السعر
+        const price = coin.current_price && coin.current_price > 0 ? `$${coin.current_price.toFixed(2)}` : "غير متاح";
         const tickerItem = document.createElement("div");
         tickerItem.className = "ticker-item";
+        tickerItem.style.animationDelay = `${index * 0.1}s`; // تأخير متسلسل لتأثير Fade-In
         tickerItem.innerHTML = `
-            ${coin.name}: $${coin.current_price.toFixed(2)} 
-            <span class="${changeClass}">(${coin.price_change_percentage_24h.toFixed(2)}%)</span>
+            ${coin.name} <span class="coin-symbol">$${symbol}</span>: ${price} 
+            <span class="${changeClass}">(${coin.price_change_percentage_24h ? coin.price_change_percentage_24h.toFixed(2) : "0.00"}%)</span>
         `;
         tickerContent.appendChild(tickerItem);
     });
@@ -72,10 +77,23 @@ function updateMarketStats(data) {
     volume24h.textContent = `حجم التداول (24 ساعة): $${(data.total_volume.usd / 1e9).toFixed(2)} مليار`;
 }
 
+// تحديث التاريخ تلقائيًا
+function updateCurrentDate() {
+    const date = new Date();
+    const months = [
+        "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+        "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+    ];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    document.getElementById("current-date").textContent = `${day} ${month} ${year}`;
+}
+
 // منطق الحاسبة
 let mode = "buy";
-const buyRate = 50; // سعر الشراء (1 USDT = 50 جنيه)
-const sellRate = 48; // سعر البيع (1 USDT = 48 جنيه)
+const buyRate = 53; // سعر الشراء (1 USDT = 53 جنيه)
+const sellRate = 50.50; // سعر البيع (1 USDT = 50.50 جنيه)
 const fixedWallet = "TQB2tBSsChr5SHcahUvwe4hEaSE1t1nKDT"; // عنوان المحفظة في البيع
 const exchangeIds = {
     binance: "40460946",
@@ -91,6 +109,12 @@ function setMode(newMode) {
     updateAccountDetailsField();
     updateReceiveFields();
     calculate();
+}
+
+function updatePriceBox() {
+    document.getElementById("buy-price").textContent = buyRate.toFixed(2);
+    document.getElementById("sell-price").textContent = sellRate.toFixed(2);
+    updateCurrentDate();
 }
 
 function updateWalletField() {
@@ -287,6 +311,7 @@ document.getElementById("order-form").addEventListener("submit", submitOrder);
 
 // تهيئة الحقول وجلب بيانات العملات عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", () => {
+    updatePriceBox();
     updateWalletField();
     updateAccountDetailsField();
     updateReceiveFields();
