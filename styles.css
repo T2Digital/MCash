@@ -38,12 +38,26 @@ h1, h2 {
     margin-bottom: 20px;
 }
 
+.intro-section, .info-section {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.intro-section p, .info-section p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #fff;
+}
+
 .calculator-section {
     background: rgba(255, 255, 255, 0.1);
     padding: 30px;
     border-radius: 10px;
-    margin-bottom: 40px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 40px;
 }
 
 .toggle {
@@ -146,20 +160,19 @@ form button:hover {
     background: #e5b000;
 }
 
-.transactions-section {
-    background: rgba(255, 255, 255, 0.1);
+#wallet-fixed {
+    word-break: break-all;
+}
+
+.footer {
+    text-align: center;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.transactions-section ul {
-    list-style: none;
-}
-
-.transactions-section li {
     background: #1e3a8a;
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
+    color: #fff;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+.footer p {
+    font-size: 14px;
 }
