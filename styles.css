@@ -33,6 +33,69 @@ body {
     margin-bottom: 20px;
 }
 
+/* تنسيق شريط الأسعار اللحظية */
+.crypto-ticker {
+    background: #1e3a8a;
+    padding: 10px 0;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.ticker-wrapper {
+    white-space: nowrap;
+    display: inline-block;
+    animation: ticker 40s linear infinite; /* تغيير السرعة إلى 40 ثانية */
+}
+
+.ticker-wrapper:hover {
+    animation-play-state: paused;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin: 0 30px; /* زيادة التباعد بين العملات */
+    color: #fff;
+    font-size: 16px;
+}
+
+.ticker-item span {
+    margin: 0 5px;
+}
+
+.ticker-item .price-up {
+    color: #34c759;
+}
+
+.ticker-item .price-down {
+    color: #ff3b30;
+}
+
+/* تنسيق شريط إحصائيات السوق */
+.market-stats {
+    background: #2d3748;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    flex-wrap: wrap;
+}
+
+.market-stats span {
+    color: #fff;
+    font-size: 14px;
+    margin: 5px;
+}
+
+/* تحريك شريط الأسعار */
+@keyframes ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
 h1, h2 {
     color: #fbbf24;
     margin-bottom: 20px;
@@ -175,4 +238,19 @@ form button:hover {
 
 .footer p {
     font-size: 14px;
+}
+
+/* توافق مع الشاشات الصغيرة */
+@media (max-width: 600px) {
+    .ticker-item {
+        font-size: 14px;
+        margin: 0 20px; /* تباعد أقل على الشاشات الصغيرة */
+    }
+    .market-stats {
+        flex-direction: column;
+        text-align: center;
+    }
+    .market-stats span {
+        font-size: 12px;
+    }
 }
